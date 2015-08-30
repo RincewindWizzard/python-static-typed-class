@@ -25,6 +25,7 @@ class TestDescriptors(unittest.TestCase):
         self.assertTrue(mary.married)
         with self.assertRaises(ValueError):
             mary.foo = 5
+        print(mary)
 
 
 if __name__ == '__main__':

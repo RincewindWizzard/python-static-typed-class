@@ -35,7 +35,10 @@ class Type(object):
         self.type = typ
 
     def __get__(self, instance, owner):
-        return self.data.get(instance, self.default)
+        if instance in self.data:
+            return self.data.get(instance, self.default)
+        else:
+            return self.default
 
     def __set__(self, instance, value):
         if value:
