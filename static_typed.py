@@ -36,7 +36,12 @@ class Type(object):
 
     def __set__(self, _, value):
         if value:
-            self.value = self.type(value)
+            if isinstance(value, self.type):
+                self.value = value
+            elif self.type in [str, int, float, bool]:
+                self.value = self.type(value)
+            else:
+                raise ValueError("Value has wrong type! {} != {}".format(type(value), self.type))
 
 class Model(object):
     """
