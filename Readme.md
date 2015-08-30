@@ -1,3 +1,4 @@
+# Static members for python classes
 This Module allows you to create classes with typed properties in Python. Some people might think of this as 'unpythonic' but it has its use cases.
 For example the age of a person, which has to be int and not str.
 Here is a little example:
