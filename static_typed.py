@@ -48,8 +48,9 @@ class Model(object):
     Subclass this to get an automagically generated __init__ method and pretty printing through __repr__
     """
     def __init__(self, *args, **kwargs):
-        for key, val in zip(self.__cons__, args):
-            setattr(self, key, val)
+        if hasattr(self, '__cons__'):
+            for key, val in zip(self.__cons__, args):
+                setattr(self, key, val)
         
         for k, v in kwargs.items():
             setattr(self, k, v)
