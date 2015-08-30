@@ -27,7 +27,8 @@ class Type(object):
     Specifies of which type the property has to be
     """
 
-    def __init__(self, typ, default=None):
+    def __init__(self, typ, default=None, cons=None):
+        self.cons = cons
         self.value = default
         self.type = typ
 
@@ -40,6 +41,8 @@ class Type(object):
                 self.value = value
             elif self.type in [str, int, float, bool]:
                 self.value = self.type(value)
+            elif self.cons:
+                self.value = self.cons(value)
             else:
                 raise ValueError("Value has wrong type! {} != {}".format(type(value), self.type))
 
