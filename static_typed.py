@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 import inspect
+from weakref import WeakKeyDictionary
 """
 This Module allows you to create classes with typed properties in Python. Some people might think of this as 'unpythonic' but it has its use cases.
 For example the age of a person, which has to be int and not str.
@@ -28,21 +29,22 @@ class Type(object):
     """
 
     def __init__(self, typ, default=None, cons=None):
+        self.default = default
         self.cons = cons
-        self.value = default
+        self.data = WeakKeyDictionary()
         self.type = typ
 
-    def __get__(self, _, value):
-        return self.value
+    def __get__(self, instance, owner):
+        return self.data.get(instance, self.default)
 
-    def __set__(self, _, value):
+    def __set__(self, instance, value):
         if value:
             if isinstance(value, self.type):
-                self.value = value
+                self.data[instance] = value
             elif self.type in [str, int, float, bool]:
-                self.value = self.type(value)
+                self.data[instance] = self.type(value)
             elif self.cons:
-                self.value = self.cons(value)
+                self.data[instance] = self.cons(value)
             else:
                 raise ValueError("Value has wrong type! {} != {}".format(type(value), self.type))
 
